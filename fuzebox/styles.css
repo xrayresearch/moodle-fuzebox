@@ -1,0 +1,71 @@
+.path-mod-url .resourcecontent {text-align: center;}
+div.fuze_row{
+    position: relative;
+    clear: both;
+    float: left;
+    width: 80%;
+}
+div.fuze_subject{
+    width: 50%;
+}
+div.fuze_row span.title{
+    position: relative;
+    float: left;
+    width: 100px;
+    font-weight: bold;
+}
+.fuze_action{
+    position: relative;
+    float: right;
+    border-radius: 4px;
+    padding: 4px;
+    margin-left: 5px;
+    color: white;
+    font-weight: bold;
+    background: -webkit-linear-gradient(top, #d3d3d3, #707070);
+    background-image: -moz-linear-gradient(top, #d3d3d3, #707070);
+}
+.fuze_action:hover{
+    background-image: -webkit-linear-gradient(top, #bababa, #575757);
+    background-image: -moz-linear-gradient(top, #bababa, #575757);
+}
+.wrapfuze{
+    background-color: #4D4E4F;
+    border-radius: 5px;
+    position: relative;
+    float: left;
+    width: 100%;
+}
+.wrapfuze a{
+    color: #FFFF00;
+}
+.wrapfuze a:hover{
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+.fuzebox{
+    padding: 5px;
+    margin: 5px;
+    color: white;
+    font-size: 12px;
+    position: relative;
+    float: left;
+    line-height: 20px;
+}
+.sidebardate{
+    width: 15%;
+}
+.meetinginfo{
+    width: 75%;
+}
+.meetingwrap{
+    position: relative;
+    float: left;
+    height: 100%;
+}
+[id*='fuzeattendees']{
+    width: 70%;
+    position: relative;
+    float: left;
+}

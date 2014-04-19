@@ -1,0 +1,307 @@
+<html>
+<head>
+    <title>Partner API Example</title>
+    <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/base/jquery-ui.css" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.js"></script>
+    <script type="text/javascript" src="jquery.form.js"></script>
+    <script type="text/javascript" src="json2.js"></script>
+    <script type="text/javascript" src="scripts.js"></script>
+    <link rel="stylesheet" href="styles.css" type="text/css"/>
+</head>
+<body>
+<noscript>
+    <p class="warning">This page requires javascript! Either enable it or abandon all hope</p>
+</noscript>
+
+<div id="loading">
+    Loading...
+</div>
+
+<div id="dialog">
+    Dialog placeholder.
+</div>
+
+<div id="generic-call-param-template" class="input" style="display: none;">
+    <input type="text" name="key"/>
+    <input type="text" name="value"/>
+    <a href="#" name="remove">remove</a>
+</div>
+
+
+<div id="tabs">
+
+    <ul>
+        <li><a href="#tab-status">Credentials</a></li>
+        <li><a href="#tab-user">User</a></li>
+        <li><a href="#tab-meeting">Meeting</a></li>
+        <li><a href="#tab-media">Media</a></li>
+        <li><a href="#tab-generic">Any API</a></li>
+    </ul>
+
+    <!-- CREDENTIALS TAB -->
+    <div id="tab-status">
+        <h2>Status</h2>
+        <dl id="statuses">
+            <dt>Partner Keys</dt>
+            <dd id="partner-status">unknown</dd>
+
+            <dt>User Credentials</dt>
+            <dd id="user-status">unknown</dd>
+        </dl>
+
+        <form>
+            <input type="button" id="clear-credentials-btn" value="Clear"/>
+        </form>
+
+        <form id="partner-credentials-form">
+            <h2>Partner Credentials</h2>
+            <p class="hint">Enter a valid PK/EK pair here</p>
+            <div class="input">
+                <label for="partner-key">Partner Key</label>
+                <input type="text" id="partner-key"/>
+            </div>
+            <div class="input">
+                <label for="encryption-key">Encryption Key</label>
+                <input type="text" id="encryption-key"/>
+            </div>
+            <div class="submit">
+                <input type="submit" value="Verify"/>
+            </div>
+        </form>
+
+        <form id="user-credentials-form">
+            <h2>User credentials</h2>
+
+            <p class="hint">You can either <a href="#" id="goto-signup-link">signup</a> a new user or use
+            an existing account by submitting the form below.</p>
+
+            <div class="input">
+	            <label for="user-email">Email</label>
+	            <input type="text" id="user-email"/>
+            </div>
+            <div class="input">
+	            <label for="user-password">Password</label>
+	            <input type="text" id="user-password"/>
+            </div>
+            <input type="hidden" id="user-encrypted-token"/>
+            <div class="submit">
+                <input type="submit" value="Signin">
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- USER TAB -->
+    <div id="tab-user">
+        <form id="user-signup-form" onsubmit="return false;">
+            <h2>User Signup</h2>
+            <div class="input">
+	            <label for="user-signup-email">Email</label>
+	            <input type="text" id="user-signup-email"/>
+            </div>
+            <div class="input">
+	            <label for="user-signup-password">Password</label>
+	            <input type="text" id="user-signup-password"/>
+            </div>
+            <div class="input">
+                <label for="user-signup-firstname">First name</label>
+                <input type="text" id="user-signup-firstname"/>
+            </div>
+            <div class="input">
+                <label for="user-signup-lastname">Last name</label>
+                <input type="text" id="user-signup-lastname"/>
+            </div>
+            <div class="input">
+                <label for="user-signup-phone">Phone</label>
+                <input type="text" id="user-signup-phone"/>
+            </div>
+            <div class="input">
+                <label for="user-signup-packages">Initial package(s)</label>
+                <input type="text" id="user-signup-packages"/>
+                <p>
+                    Comma-separated list of package names
+                </p>
+            </div>
+            <div class="input">
+                <label for="user-signup-welcome">Send welcome email</label>
+                <input type="checkbox" id="user-signup-welcome" value="1"/>
+            </div>
+            <div class="submit">
+                <input type="submit" value="Signup user"/>
+            </div>
+
+        </form>
+        <form id="user-subscribe-form" onsubmit="return false;">
+            <h2>Subscribe</h2>
+            <p>
+                This allows the current user to be subscribed to various packages
+	            or addons. You can <a href="#" id="list-packages-link">list
+	            available packages</a>.
+            </p>
+            <div class="input">
+                <label for="user-subscribe-packages">Package</label>
+                <input type="text" id="user-subscribe-packages"/>
+                <p>
+                    Comma-separated list of package names
+                </p>
+            </div>
+            <div class="submit">
+                <input type="submit" value="Subscribe"/>
+            </div>
+        </form>
+    </div>
+
+    <!-- MEETING TAB -->
+    <div id="tab-meeting">
+        <form id="meeting-schedule-form">
+	        <h2>Schedule or start a meeting</h2>
+	        <div class="input">
+	           <label for="meeting-schedule-startnow">Start immediately</label>
+	           <input type="checkbox" id="meeting-schedule-startnow" value="1"/>
+	           <p>
+	               Checking this will cause the <tt>meeting/start</tt> method to be
+	               called, instead of <tt>meeting/schedule</tt>.
+	           </p>
+	        </div>
+	        <div class="input">
+	            <label for="meeting-schedule-subject">Subject</label>
+	            <input type="text" id="meeting-schedule-subject"/>
+	        </div>
+            <div class="input">
+               <label for="meeting-schedule-sendemail">Send invitations</label>
+               <input type="checkbox" id="meeting-schedule-sendemail" value="1"/>
+            </div>
+            <div class="input">
+               <label for="meeting-schedule-includetollfree">Include toll-free #</label>
+               <input type="checkbox" id="meeting-schedule-includetollfree" value="1"/>
+            </div>
+            <div class="input">
+               <label for="meeting-schedule-includeinternationaldial">Include international #</label>
+               <input type="checkbox" id="meeting-schedule-includeinternationaldial" value="1"/>
+            </div>
+            <div class="input">
+               <label for="meeting-schedule-starttime">Starts at</label>
+               <input type="text" id="meeting-schedule-starttime"/> RFC2822-formatted
+            </div>
+            <div class="input">
+               <label for="meeting-schedule-endtime">Ends at</label>
+               <input type="text" id="meeting-schedule-endtime"/> RFC2822-formatted
+            </div>
+            <!-- <div class="input">
+               <label for="meeting-schedule-invitationtext">Invitation</label>
+               <textarea cols="72" rows="15" id="meeting-schedule-invitationtext"></textarea>
+            </div>
+            <div class="input">
+               <label for="meeting-schedule-invitees">Invitees (comma separated)</label>
+               <input type="text" id="meeting-schedule-invitees"/>
+            </div>  -->
+            <div class="input">
+               <label for="meeting-schedule-timezone">Timezone</label>
+               <input type="text" id="meeting-schedule-timezone"/> TZ format
+            </div>
+            <div class="input">
+               <label for="meeting-schedule-autorecording">Auto-record the meeting</label>
+               <input type="checkbox" id="meeting-schedule-autorecording" value="1"/>
+            </div>
+            <div class="input">
+                <label for="meeting-schedule-webinar">Webinar Mode</label>
+                <input type="checkbox" id="meeting-schedule-webinar" value="1"/>
+            </div>
+            <div class="submit">
+                <input type="submit" value="Schedule it"/>
+            </div>
+        </form>
+
+        <form id="meeting-launch-form">
+            <h2>Launch a meeting</h2>
+            <div class="input">
+                <label for="meeting-launch-id">Meeting ID</label>
+                <input type="text" id="meeting-launch-id"/>
+            </div>
+            <div class="submit">
+                <input type="submit" value="Go!"/>
+            </div>
+        </form>
+
+        <form id="meeting-list-form">
+            <h2>List Meetings</h2>
+
+            <div class="input">
+                <label for="meeting-list-startdate">From</label>
+                <input id="meeting-list-startdate" type="text" class="calendar"/>
+            </div>
+
+            <div class="input">
+                <label for="meeting-list-enddate">To</label>
+                <input id="meeting-list-enddate" type="text" class="calendar"/>
+            </div>
+
+            <div class="input">
+                <label for="meeting-list-count">Number of results</label>
+                <input id="meeting-list-count" type="text"/>
+            </div>
+
+            <div class="input">
+                <label for="meeting-list-page">Page (offset)</label>
+                <input id="meeting-list-page" type="text"/>
+            </div>
+
+            <div class="submit">
+                <input type="submit" value="List"/>
+            </div>
+        </form>
+
+    </div>
+
+    <div id="tab-media">
+        <form method="post" action="ajax.php" id="media-upload-form" enctype="multipart/form-data">
+            <h2>Upload new media</h2>
+            <div class="input">
+                <label for="media-upload-file">File</label>
+                <input id="media-upload-file" name="media" type="file"/>
+            </div>
+            <div class="input">
+                <label for="media-upload-meetingid">Meeting ID</label>
+                <input id="media-upload-meetingid" name="meetingId" type="text" />
+            </div>
+            <div class="submit">
+                <input type="submit" value="Upload"/>
+            </div>
+        </form>
+    </div>
+
+    <div id="tab-generic">
+        <form id="generic-call-form">
+            <h2>Generic Partner API interface</h2>
+            <p>Use this to call any method of the Fuze Partner API. The request will be
+            made using the correct <tt>X-Partnerkey</tt> token and the correct <tt>X-Token</tt> header if
+            user credentials are present.</p>
+            <p><strong>Note:</strong> Parameters listed on this form are sent to the Fuze backend vanilla.
+            Certain methods (like <tt>user/signup</tt> and <tt>user/signin</tt>) require <em>secret-encoded</em>
+            parameters and will therefore not work.</p>
+            <div class="input">
+                <label for="generic-call-methodname">Full Method Name</label>
+                <input type="text" id="generic-call-methodname"/>
+                <p>This should be the full method name, like <tt>meeting/get</tt></p>
+            </div>
+            <fieldset id="generic-call-parameters">
+                <legend>Method Parameters</legend>
+                <div>
+                    <div class="column col_title">Name</div>
+                    <div class="column col_title">Value</div>
+                </div>
+            </fieldset>
+
+            <div class="submit">
+                <input type="button" id="generic-call-addparam" value="Add a parameter"/>
+                <input type="submit" value="Call!"/>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

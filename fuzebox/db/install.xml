@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="mod/fuzebox/db" VERSION="20130228" COMMENT="XMLDB file for fuzebox module"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="fuzebox" COMMENT="each record is one fuzebox meeting resource" NEXT="fuzebox_user">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="user"/>
+        <FIELD NAME="user" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="course"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="user" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="course" NEXT="intro"/>
+        <FIELD NAME="intro" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="name" NEXT="introformat"/>
+        <FIELD NAME="introformat" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="intro" NEXT="meetingid"/>
+        <FIELD NAME="meetingid" TYPE="int" LENGTH="16" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="introformat" NEXT="starttime"/>
+        <FIELD NAME="starttime" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="meetingid" NEXT="attendurl"/>
+        <FIELD NAME="attendurl" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false" PREVIOUS="starttime" NEXT="launchurl"/>
+        <FIELD NAME="launchurl" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false" PREVIOUS="attendurl" NEXT="launched"/>
+        <FIELD NAME="launched" TYPE="int" LENGTH="2" NOTNULL="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="launchurl" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="launched"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="userid"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="user" REFTABLE="fuzebox_user" REFFIELDS="user" PREVIOUS="primary" NEXT="courseid"/>
+        <KEY NAME="courseid" TYPE="foreign" FIELDS="id" REFTABLE="course" REFFIELDS="id" PREVIOUS="userid"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="course" UNIQUE="false" FIELDS="course"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="fuzebox_user" COMMENT="User profile and passwords for users registered to fuzebox" PREVIOUS="fuzebox">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="user"/>
+        <FIELD NAME="user" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="id" NEXT="password"/>
+        <FIELD NAME="password" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="user" NEXT="signedon"/>
+        <FIELD NAME="signedon" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="password" NEXT="lastsignin"/>
+        <FIELD NAME="lastsignin" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" PREVIOUS="signedon" NEXT="package"/>
+        <FIELD NAME="package" TYPE="int" LENGTH="4" NOTNULL="true" SEQUENCE="false" PREVIOUS="lastsignin"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="userid"/>
+        <KEY NAME="userid" TYPE="foreign" FIELDS="user" REFTABLE="user" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>
